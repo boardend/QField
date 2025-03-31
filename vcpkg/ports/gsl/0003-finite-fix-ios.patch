@@ -1,0 +1,13 @@
+--- config.h	2025-02-24 17:52:08
++++ config.h	2025-02-24 17:54:42
+@@ -289,10 +289,6 @@
+ 
+ #if !HAVE_DECL_ISFINITE
+ #define isfinite gsl_finite
+-#endif
+-
+-#if !HAVE_DECL_FINITE
+-#define finite gsl_finite
+ #endif
+ 
+ #if !HAVE_DECL_ISNAN

@@ -46,7 +46,12 @@
         "ossl"
       ]
     },
-    "qgis",
+    {
+      "name": "qgis",
+      "features": [
+        "quick"
+      ]
+    },
     {
       "name": "qgis",
       "host": true,

@@ -39,4 +39,4 @@ cmake \
     -D APP_ICON="${APP_ICON}" \
     -D APP_NAME="${APP_NAME}"
 
-cmake --build $(git rev-parse --show-toplevel)/build-x64-android --target aar
+cmake --build $(git rev-parse --show-toplevel)/build-x64-android

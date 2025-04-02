@@ -37,7 +37,7 @@ index adab7a58d..f6dc2278e 100644
  /* Define to 1 if you have the declaration of 'hypot', and to 0 if you don't.
     */
 -#undef HAVE_DECL_HYPOT
-+#define HAVE_DECL_HYPOT 1
++#define HAVE_DECL_FINITE 0
  
  /* Define to 1 if you have the declaration of 'isfinite', and to 0 if you
     don't. */

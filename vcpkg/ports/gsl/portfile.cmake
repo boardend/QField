@@ -6,14 +6,26 @@ vcpkg_download_distfile(ARCHIVE
     SHA512 4427f6ce59dc14eabd6d31ef1fcac1849b4d7357faf48873aef642464ddf21cc9b500d516f08b410f02a2daa9a6ff30220f3995584b0a6ae2f73c522d1abb66b
 )
 
-vcpkg_extract_source_archive(
-    SOURCE_PATH
-    ARCHIVE ${ARCHIVE}
-    PATCHES
-        0001-configure.patch
-        0002-add-fp-control.patch
-        0003-finite-fix-ios.patch
-)
+if(VCPKG_TARGET_IS_OSX OR VCPKG_TARGET_IS_IOS)
+    vcpkg_extract_source_archive(
+        SOURCE_PATH
+        ARCHIVE ${ARCHIVE}
+        PATCHES
+            0001-configure-ios.patch
+            0002-add-fp-control.patch
+            0003-finite-fix-ios.patch
+    )
+else()
+    vcpkg_extract_source_archive(
+        SOURCE_PATH
+        ARCHIVE ${ARCHIVE}
+        PATCHES
+            0001-configure.patch
+            0002-add-fp-control.patch
+    )
+endif()
+
+
 
 file(COPY "${CMAKE_CURRENT_LIST_DIR}/CMakeLists.txt" DESTINATION "${SOURCE_PATH}")
 

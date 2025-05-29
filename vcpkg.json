@@ -106,14 +106,6 @@
       ]
     },
     "qtwebview",
-    {
-      "name": "sentry-cocoa",
-      "platform": "ios"
-    },
-    {
-      "name": "sentry-native",
-      "platform": "!android & !ios & !osx"
-    },
     "spix-qt6",
     {
       "name": "tiff",

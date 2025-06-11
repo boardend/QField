@@ -3,8 +3,8 @@ vcpkg_check_linkage(ONLY_STATIC_LIBRARY)
 vcpkg_from_github(
     OUT_SOURCE_PATH SOURCE_PATH
     REPO zxing-cpp/zxing-cpp
-    REF master
-    SHA512 5a32b6a74372210b4c927f8ed26ac8e1ed43ef60203afcda23767ebdba69f2ee9967dcfdc10d10d1ca64c7e1a58a431d0491b0536c271148a49c7e79dd8c2abe
+    REF e2da6952ca475b1c4d15b94306996de0a8b68e81
+    SHA512 8a21427a30da03ef0abd0514f4bcbff6fa95ccd74d0dd27f08c55a514c6150bce122b56ed8ffd465abbad52ab75910570ed8e2ad1e539511b508590272cd1836
     HEAD_REF master
 )
 

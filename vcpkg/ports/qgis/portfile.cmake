@@ -20,6 +20,7 @@ vcpkg_from_github(
         rectangle.patch # Remove when upgrading to QGIS 3.42
         oauth-headers.patch
         andorid_extras_qt6.patch
+        ios-arm64.patch
 )
 
 file(REMOVE ${SOURCE_PATH}/cmake/FindGDAL.cmake)

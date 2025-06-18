@@ -1,0 +1,41 @@
+diff --git a/src/quickgui/qgsquickmapcanvasmap.cpp b/src/quickgui/qgsquickmapcanvasmap.cpp
+index 1298a1c1945..ee088fdd5e7 100644
+--- a/src/quickgui/qgsquickmapcanvasmap.cpp
++++ b/src/quickgui/qgsquickmapcanvasmap.cpp
+@@ -42,7 +42,7 @@ QgsQuickMapCanvasMap::QgsQuickMapCanvasMap( QQuickItem *parent )
+   , mMapSettings( std::make_unique<QgsQuickMapSettings>() )
+   , mCache( std::make_unique<QgsMapRendererCache>() )
+ {
+-  connect( this, &QQuickItem::windowChanged, this, &QgsQuickMapCanvasMap::onWindowChanged );
++  // connect( this, &QQuickItem::windowChanged, this, &QgsQuickMapCanvasMap::onWindowChanged );
+   connect( &mRefreshTimer, &QTimer::timeout, this, [=] { refreshMap(); } );
+   connect( &mMapUpdateTimer, &QTimer::timeout, this, &QgsQuickMapCanvasMap::renderJobUpdated );
+ 
+@@ -63,6 +63,13 @@ QgsQuickMapCanvasMap::QgsQuickMapCanvasMap( QQuickItem *parent )
+ 
+ QgsQuickMapCanvasMap::~QgsQuickMapCanvasMap() = default;
+ 
++void QgsQuickMapCanvasMap::componentComplete()
++{
++    QQuickItem::componentComplete();
++    qDebug() << "QgsQuickMapCanvasMap::componentComplete()";
++    connect(this, &QQuickItem::windowChanged, this, &QgsQuickMapCanvasMap::onWindowChanged);
++}
++
+ QgsQuickMapSettings *QgsQuickMapCanvasMap::mapSettings() const
+ {
+   return mMapSettings.get();
+diff --git a/src/quickgui/qgsquickmapcanvasmap.h b/src/quickgui/qgsquickmapcanvasmap.h
+index e485b96c59a..42fdda77c7e 100644
+--- a/src/quickgui/qgsquickmapcanvasmap.h
++++ b/src/quickgui/qgsquickmapcanvasmap.h
+@@ -144,6 +144,9 @@ class QUICK_EXPORT QgsQuickMapCanvasMap : public QQuickItem
+     void incrementalRenderingChanged();
+ 
+   protected:
++protected:
++    void componentComplete() override;
++
+ #if QT_VERSION < QT_VERSION_CHECK( 6, 0, 0 )
+     void geometryChanged( const QRectF &newGeometry, const QRectF &oldGeometry ) override;
+ #else

@@ -8,6 +8,7 @@ vcpkg_from_gitlab(
     PATCHES
         export-unofficial-poppler.patch
         private-namespace.patch
+        fix-x509-ptr-win.patch
 )
 file(REMOVE "${SOURCE_PATH}/cmake/Modules/FindFontconfig.cmake")
 

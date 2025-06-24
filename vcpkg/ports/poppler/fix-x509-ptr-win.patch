@@ -1,0 +1,179 @@
+diff --git a/poppler/Annot.cc b/poppler/Annot.cc
+index 7841637c..e2dff964 100644
+--- a/poppler/Annot.cc
++++ b/poppler/Annot.cc
+@@ -90,6 +90,7 @@
+ #include "DateInfo.h"
+ #include "Link.h"
+ #include "UTF.h"
++#include "CertificateInfo.h"
+ #include <cstring>
+ #include <algorithm>
+ 
+diff --git a/poppler/AnnotStampImageHelper.cc b/poppler/AnnotStampImageHelper.cc
+index 7d8fd85e..c5494d12 100644
+--- a/poppler/AnnotStampImageHelper.cc
++++ b/poppler/AnnotStampImageHelper.cc
+@@ -10,6 +10,7 @@
+ //========================================================================
+ 
+ #include "AnnotStampImageHelper.h"
++#include "CertificateInfo.h"
+ 
+ #include "goo/gmem.h"
+ #include "goo/gstrtod.h"
+diff --git a/poppler/Catalog.cc b/poppler/Catalog.cc
+index 211197a4..c9da36c3 100644
+--- a/poppler/Catalog.cc
++++ b/poppler/Catalog.cc
+@@ -67,6 +67,7 @@
+ #include "ViewerPreferences.h"
+ #include "FileSpec.h"
+ #include "StructTreeRoot.h"
++#include "CertificateInfo.h"
+ 
+ //------------------------------------------------------------------------
+ // Catalog
+diff --git a/poppler/FDPDFDocBuilder.cc b/poppler/FDPDFDocBuilder.cc
+index dcfbbacc..091b4734 100644
+--- a/poppler/FDPDFDocBuilder.cc
++++ b/poppler/FDPDFDocBuilder.cc
+@@ -18,6 +18,7 @@
+ #include "FDPDFDocBuilder.h"
+ #include "FILECacheLoader.h"
+ #include "CachedFile.h"
++#include "CertificateInfo.h"
+ 
+ //------------------------------------------------------------------------
+ // FileDescriptorPDFDocBuilder
+diff --git a/poppler/FontInfo.cc b/poppler/FontInfo.cc
+index 2f1ff7fc..6116be03 100644
+--- a/poppler/FontInfo.cc
++++ b/poppler/FontInfo.cc
+@@ -44,6 +44,7 @@
+ #include "Annot.h"
+ #include "PDFDoc.h"
+ #include "FontInfo.h"
++#include "CertificateInfo.h"
+ 
+ FontInfoScanner::FontInfoScanner(PDFDoc *docA, int firstPage)
+ {
+diff --git a/poppler/Gfx.cc b/poppler/Gfx.cc
+index 2db12d88..59cc05d8 100644
+--- a/poppler/Gfx.cc
++++ b/poppler/Gfx.cc
+@@ -84,6 +84,7 @@
+ #include "ProfileData.h"
+ #include "Catalog.h"
+ #include "OptionalContent.h"
++#include "CertificateInfo.h"
+ 
+ // the MSVC math.h doesn't define this
+ #ifndef M_PI
+diff --git a/poppler/Hints.cc b/poppler/Hints.cc
+index 4933639c..95812ceb 100644
+--- a/poppler/Hints.cc
++++ b/poppler/Hints.cc
+@@ -26,6 +26,7 @@
+ #include "Parser.h"
+ #include "Lexer.h"
+ #include "SecurityHandler.h"
++#include "CertificateInfo.h"
+ 
+ #include <climits>
+ 
+diff --git a/poppler/ImageEmbeddingUtils.cc b/poppler/ImageEmbeddingUtils.cc
+index ffaa3a97..667e42fb 100644
+--- a/poppler/ImageEmbeddingUtils.cc
++++ b/poppler/ImageEmbeddingUtils.cc
+@@ -33,6 +33,7 @@ extern "C" {
+ #include "Array.h"
+ #include "Error.h"
+ #include "PDFDoc.h"
++#include "CertificateInfo.h"
+ 
+ namespace ImageEmbeddingUtils {
+ 
+diff --git a/poppler/JSInfo.cc b/poppler/JSInfo.cc
+index eee27a60..33311568 100644
+--- a/poppler/JSInfo.cc
++++ b/poppler/JSInfo.cc
+@@ -27,6 +27,7 @@
+ #include "Form.h"
+ #include "UnicodeMap.h"
+ #include "UTF.h"
++#include "CertificateInfo.h"
+ // #include "Win32Console.h"
+ 
+ JSInfo::JSInfo(PDFDoc *docA, int firstPage)
+diff --git a/poppler/LocalPDFDocBuilder.cc b/poppler/LocalPDFDocBuilder.cc
+index bf4856e2..b535c313 100644
+--- a/poppler/LocalPDFDocBuilder.cc
++++ b/poppler/LocalPDFDocBuilder.cc
+@@ -13,6 +13,7 @@
+ #include <config.h>
+ 
+ #include "LocalPDFDocBuilder.h"
++#include "CertificateInfo.h"
+ 
+ //------------------------------------------------------------------------
+ // LocalPDFDocBuilder
+diff --git a/poppler/Outline.cc b/poppler/Outline.cc
+index 9e760662..600630e7 100644
+--- a/poppler/Outline.cc
++++ b/poppler/Outline.cc
+@@ -39,6 +39,7 @@
+ #include "PDFDocEncoding.h"
+ #include "Outline.h"
+ #include "UTF.h"
++#include "CertificateInfo.h"
+ 
+ //------------------------------------------------------------------------
+ 
+diff --git a/poppler/PDFDocBuilder.cc b/poppler/PDFDocBuilder.cc
+index f6dac952..0f470157 100644
+--- a/poppler/PDFDocBuilder.cc
++++ b/poppler/PDFDocBuilder.cc
+@@ -9,5 +9,6 @@
+ //========================================================================
+ 
+ #include "PDFDocBuilder.h"
++#include "CertificateInfo.h"
+ 
+ PDFDocBuilder::~PDFDocBuilder() = default;
+diff --git a/poppler/PDFDocFactory.cc b/poppler/PDFDocFactory.cc
+index e4db3e49..29e0a35b 100644
+--- a/poppler/PDFDocFactory.cc
++++ b/poppler/PDFDocFactory.cc
+@@ -16,6 +16,7 @@
+ #include <config.h>
+ 
+ #include "PDFDocFactory.h"
++#include "CertificateInfo.h"
+ 
+ #include "goo/GooString.h"
+ #include "PDFDoc.h"
+diff --git a/poppler/Page.cc b/poppler/Page.cc
+index d8711106..7639d79d 100644
+--- a/poppler/Page.cc
++++ b/poppler/Page.cc
+@@ -60,6 +60,7 @@
+ #include "Page.h"
+ #include "Catalog.h"
+ #include "Form.h"
++#include "CertificateInfo.h"
+ 
+ //------------------------------------------------------------------------
+ // PDFRectangle
+diff --git a/poppler/SignatureInfo.h b/poppler/SignatureInfo.h
+index 62374ba3..61d09ec5 100644
+--- a/poppler/SignatureInfo.h
++++ b/poppler/SignatureInfo.h
+@@ -26,6 +26,7 @@
+ #include "poppler_private_export.h"
+ #include "goo/GooString.h"
+ #include "HashAlgorithm.h"
++#include "CertificateInfo.h"
+ 
+ enum SignatureValidationStatus
+ {

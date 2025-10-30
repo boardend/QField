@@ -1,0 +1,27 @@
+From cd3008f4aa2082c1a63ed59fa5b4b92b448e3a60 Mon Sep 17 00:00:00 2001
+From: Test <test@test.com>
+Date: Tue, 21 Oct 2025 12:24:55 +0200
+Subject: [PATCH] Fix SPATIALITE_INCLUDE_DIR to use first path only
+
+---
+ cmake/modules/packages/FindSPATIALITE.cmake | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/cmake/modules/packages/FindSPATIALITE.cmake b/cmake/modules/packages/FindSPATIALITE.cmake
+index 1a2ba18..25482b6 100644
+--- a/cmake/modules/packages/FindSPATIALITE.cmake
++++ b/cmake/modules/packages/FindSPATIALITE.cmake
+@@ -37,7 +37,9 @@ if(PKG_CONFIG_FOUND)
+     set(SPATIALITE_VERSION_STRING ${PC_SPATIALITE_VERSION})
+ endif()
+ if(PC_SPATIALITE_FOUND)
+-    set(SPATIALITE_INCLUDE_DIR "${PC_SPATIALITE_INCLUDE_DIRS}" CACHE STRING "")
++    # Fix: Extract first include directory from the list to avoid file read errors
++    list(GET PC_SPATIALITE_INCLUDE_DIRS 0 _SPATIALITE_FIRST_INCLUDE_DIR)
++    set(SPATIALITE_INCLUDE_DIR "${_SPATIALITE_FIRST_INCLUDE_DIR}" CACHE STRING "")
+     set(SPATIALITE_LIBRARY "${PC_SPATIALITE_LIBRARIES}" CACHE STRING "")
+     if(NOT TARGET SPATIALITE::SPATIALITE)
+         add_library(SPATIALITE::SPATIALITE INTERFACE IMPORTED)
+-- 
+2.33.0.windows.2
+

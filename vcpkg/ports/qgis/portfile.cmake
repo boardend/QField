@@ -20,7 +20,8 @@ vcpkg_from_github(
         rectangle.patch # Remove when upgrading to QGIS 3.42
         oauth-headers.patch
         andorid_extras_qt6.patch
-        ios-arm64.patch
+        # ios-arm64.patch
+        # debug-constructors.patch # Add debug prints to constructors/destructors for debugging
 )
 
 file(REMOVE ${SOURCE_PATH}/cmake/FindGDAL.cmake)
@@ -189,6 +190,27 @@ vcpkg_configure_cmake(
 )
 
 vcpkg_install_cmake()
+
+# if(VCPKG_TARGET_IS_WINDOWS)
+#     file(GLOB QGIS_PDB_FILES
+#         "${CURRENT_BUILDTREES_DIR}/${TARGET_TRIPLET}-dbg/output/bin/Debug/*.pdb"
+#         "${CURRENT_BUILDTREES_DIR}/${TARGET_TRIPLET}-dbg/output/lib/Debug/*.pdb"
+#     )
+#     foreach(PDB_FILE IN LISTS QGIS_PDB_FILES)
+#         file(COPY "${PDB_FILE}" DESTINATION "${CURRENT_PACKAGES_DIR}/debug/lib")
+#     endforeach()
+# endif()
+
+if(VCPKG_TARGET_IS_WINDOWS AND VCPKG_LIBRARY_LINKAGE STREQUAL "static")
+    # Copy debug static libs from build output to installed debug lib dir
+    file(GLOB QGIS_DEBUG_LIBS
+        "${CURRENT_BUILDTREES_DIR}/${TARGET_TRIPLET}-dbg/src/*/Debug/*.lib"
+        "${CURRENT_BUILDTREES_DIR}/${TARGET_TRIPLET}-dbg/src/Debug/*.lib"
+    )
+    foreach(LIB_FILE IN LISTS QGIS_DEBUG_LIBS)
+        file(COPY "${LIB_FILE}" DESTINATION "${CURRENT_PACKAGES_DIR}/debug/lib")
+    endforeach()
+endif()
 
 if(VCPKG_TARGET_IS_WINDOWS)
     function(copy_path basepath targetdir)

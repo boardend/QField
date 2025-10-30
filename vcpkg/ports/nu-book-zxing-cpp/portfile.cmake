@@ -13,6 +13,8 @@ vcpkg_cmake_configure(
     OPTIONS
         -DBUILD_BLACKBOX_TESTS=OFF
         -DBUILD_EXAMPLES=OFF
+        -DCMAKE_CXX_STANDARD=17
+        -DCMAKE_CXX_EXTENSIONS=OFF
 )
 
 vcpkg_cmake_install()

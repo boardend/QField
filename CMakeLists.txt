@@ -2,6 +2,12 @@
 # CMake settings
 cmake_minimum_required(VERSION 3.19)
 
+# on windows
+if(WIN32)
+  set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "" FORCE)
+endif()
+
+
 set(VCPKG_TAG 1aeec7b84d33cdaebdf479f24267c45c46bbc297)
 
 set(QML_IMPORT_PATH ${CMAKE_SOURCE_DIR}/src/qml/imports CACHE PATH "QML import path for Qt Creator to detect custom modules properly")

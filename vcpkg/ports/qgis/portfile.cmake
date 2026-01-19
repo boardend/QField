@@ -16,8 +16,8 @@ vcpkg_from_github(
         crssync-no-install.patch
         include-qthread.patch
         processing.patch # Needed to avoid link issue with tinygltf (ATM embedded into QGIS) and _GEOSQueryCallback defined multiple times
-        locatorcontext.patch # Remove when upgrading to QGIS 3.42
-        rectangle.patch # Remove when upgrading to QGIS 3.42  
+        locatorcontext.patch # Remove when upgrading to QGIS 3.42  
+        rectangle.patch # Remove when upgrading to QGIS 3.42
         oauth-headers.patch
         andorid_extras_qt6.patch
         ios-arm64.patch
@@ -190,15 +190,6 @@ vcpkg_configure_cmake(
 
 vcpkg_install_cmake()
 
-# if(VCPKG_TARGET_IS_WINDOWS)
-#     file(GLOB QGIS_PDB_FILES
-#         "${CURRENT_BUILDTREES_DIR}/${TARGET_TRIPLET}-dbg/output/bin/Debug/*.pdb"
-#         "${CURRENT_BUILDTREES_DIR}/${TARGET_TRIPLET}-dbg/output/lib/Debug/*.pdb"
-#     )
-#     foreach(PDB_FILE IN LISTS QGIS_PDB_FILES)
-#         file(COPY "${PDB_FILE}" DESTINATION "${CURRENT_PACKAGES_DIR}/debug/lib")
-#     endforeach()
-# endif()
 
 if(VCPKG_TARGET_IS_WINDOWS AND VCPKG_LIBRARY_LINKAGE STREQUAL "static")
     # Copy debug static libs from build output to installed debug lib dir

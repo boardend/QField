@@ -16,11 +16,11 @@ vcpkg_from_github(
         crssync-no-install.patch
         include-qthread.patch
         processing.patch # Needed to avoid link issue with tinygltf (ATM embedded into QGIS) and _GEOSQueryCallback defined multiple times
-        locatorcontext.patch # Remove when upgrading to QGIS 3.42  
+        locatorcontext.patch # Remove when upgrading to QGIS 3.42
         rectangle.patch # Remove when upgrading to QGIS 3.42
         oauth-headers.patch
         andorid_extras_qt6.patch
-        # ios-arm64.patch
+        ios-arm64.patch
         # debug-constructors.patch # Add debug prints to constructors/destructors for debugging
 )
 

@@ -360,7 +360,7 @@ target_link_libraries(
          Qt::Concurrent
          Qt::WebView
          Qt::Multimedia
-         Qt::RemoteObjects
+         $<$<BOOL:${Qt6RemoteObjects_FOUND}>:Qt::RemoteObjects>
          Qt::WebSockets
          Qt::Quick3D
          QGIS::Core

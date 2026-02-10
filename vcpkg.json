@@ -84,7 +84,10 @@
       ]
     },
     "qtquick3d",
-    "qtremoteobjects",
+    {
+      "name": "qtremoteobjects",
+      "platform": "windows"
+    },
     {
       "name": "qtsensors",
       "features": [

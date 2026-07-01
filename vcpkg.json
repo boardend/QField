@@ -115,23 +115,6 @@
         }
       ]
     },
-    {
-      "name": "sentry-cocoa",
-      "platform": "ios"
-    },
-    {
-      "name": "sentry-native",
-      "default-features": false,
-      "features": [
-        "backend",
-        {
-          "name": "breakpad",
-          "platform": "windows | linux"
-        },
-        "transport"
-      ],
-      "platform": "osx | linux | (windows & !arm & !uwp)"
-    },
     "spix-qt6",
     {
       "name": "tiff",

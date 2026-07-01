@@ -121,7 +121,16 @@ if(TRUE) # Should possibly have a "static only" check
   endif()
   # End Terrible hack
 
-  find_library(Qca-ossl_LIBRARIES NAMES qca-ossl PATH_SUFFIXES Qca/crypto)
+  # Find qca-ossl with proper debug/release variants
+  find_library(Qca-ossl_LIBRARIES_RELEASE NAMES qca-ossl PATH_SUFFIXES Qca/crypto)
+  find_library(Qca-ossl_LIBRARIES_DEBUG NAMES qca-ossld PATH_SUFFIXES Qca/crypto)
+  if(Qca-ossl_LIBRARIES_DEBUG AND Qca-ossl_LIBRARIES_RELEASE)
+    set(Qca-ossl_LIBRARIES optimized ${Qca-ossl_LIBRARIES_RELEASE} debug ${Qca-ossl_LIBRARIES_DEBUG})
+  elseif(Qca-ossl_LIBRARIES_RELEASE)
+    set(Qca-ossl_LIBRARIES ${Qca-ossl_LIBRARIES_RELEASE})
+  elseif(Qca-ossl_LIBRARIES_DEBUG)
+    set(Qca-ossl_LIBRARIES ${Qca-ossl_LIBRARIES_DEBUG})
+  endif()
   target_link_libraries(QGIS::Core INTERFACE ${Qca-ossl_LIBRARIES})
 
   _qgis_core_add_dependency(GDAL::GDAL GDAL)
@@ -133,7 +142,11 @@ if(TRUE) # Should possibly have a "static only" check
   _qgis_core_add_dependency(libzip::zip libzip)
   _qgis_core_add_dependency(ZLIB::ZLIB ZLIB)
   if(MSVC)
-    _find_and_link_library(spatialindex-64 QGIS::Core)
+   if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+      _find_and_link_library(spatialindex-64d QGIS::Core)
+   else()
+      _find_and_link_library(spatialindex-32d QGIS::Core)
+   endif()
   else()
     _find_and_link_library(spatialindex QGIS::Core)
   endif()

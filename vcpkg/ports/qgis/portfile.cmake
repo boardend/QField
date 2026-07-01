@@ -18,6 +18,7 @@ vcpkg_from_github(
         metadata.patch
         install-quickgui-moc-headers.patch
         bigobj.patch # MSVC Debug: qgis.cpp exceeds the COFF section limit (C1128)
+        andorid_extras_qt6.patch
 )
 
 

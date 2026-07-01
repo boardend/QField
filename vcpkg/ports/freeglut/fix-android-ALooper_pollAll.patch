@@ -1,0 +1,15 @@
+diff --git a/src/android/fg_main_android.c b/src/android/fg_main_android.c
+index 1df336c2..aea2fe81 100644
+--- a/src/android/fg_main_android.c
++++ b/src/android/fg_main_android.c
+@@ -425,9 +425,7 @@ void fgPlatformProcessSingleEvent ( void )
+      process ~60 (screen Hz) mouse events per second, plus other ports
+      are processing all events already.  So let's process all pending
+      events. */
+-  /* if ((ident=ALooper_pollOnce(0, NULL, &events, (void**)&source)) >= 0) { */
+-  while ((ident=ALooper_pollAll(0, NULL, &events, (void**)&source)) >= 0) {
+-    /* Process this event. */
++  if ((ident=ALooper_pollOnce(0, NULL, &events, (void**)&source)) >= 0) {
+     if (source != NULL) {
+       source->process(source->app, source);
+     }

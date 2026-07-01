@@ -16,6 +16,7 @@ vcpkg_from_github(
         mesh.patch
         compatibility.patch
         metadata.patch
+        andorid_extras_qt6.patch
 )
 
 

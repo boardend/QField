@@ -1,0 +1,12 @@
+diff --git a/src/quickgui/CMakeLists.txt b/src/quickgui/CMakeLists.txt
+--- a/src/quickgui/CMakeLists.txt
++++ b/src/quickgui/CMakeLists.txt
+@@ -60,7 +60,7 @@ target_link_libraries(qgis_quick
+     ${QT_VERSION_BASE}::Positioning
+     qgis_core)
+
+-if(CMAKE_SYSTEM_NAME STREQUAL "Android")
++if(CMAKE_SYSTEM_NAME STREQUAL "Android" AND NOT BUILD_WITH_QT6)
+   target_link_libraries(qgis_quick ${QT_VERSION_BASE}::AndroidExtras)
+ endif()
+ target_compile_definitions(qgis_quick PRIVATE "-DQT_NO_FOREACH")

@@ -18,3 +18,4 @@ set(ANDROID_SDK_ROOT $ENV{ANDROID_SDK_ROOT})
 
 set(VCPKG_CXX_FLAGS "-fstack-protector-strong")
 set(VCPKG_C_FLAGS "-fstack-protector-strong")
+set(VCPKG_LINKER_FLAGS "-Wl,-z,max-page-size=16384")

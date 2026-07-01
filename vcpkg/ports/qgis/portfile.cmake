@@ -15,6 +15,7 @@ vcpkg_from_github(
         processing.patch # Needed to avoid link issue with tinygltf (ATM embedded into QGIS) and _GEOSQueryCallback defined multiple times
         mesh.patch
         compatibility.patch
+        ios-arm64.patch
         metadata.patch
         andorid_extras_qt6.patch
 )

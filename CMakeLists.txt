@@ -176,7 +176,10 @@ if (ANDROID)
 
 endif()
 
-find_package(Qt6 COMPONENTS Concurrent Core Qml Gui Xml Positioning Widgets Network Quick Svg Sql Sensors WebView Multimedia Bluetooth Nfc RemoteObjects WebSockets Quick3D REQUIRED)
+find_package(Qt6 COMPONENTS Concurrent Core Qml Gui Xml Positioning Widgets Network Quick Svg Sql Sensors WebView Multimedia Bluetooth Nfc WebSockets Quick3D REQUIRED)
+if(WIN32)
+  find_package(Qt6 COMPONENTS RemoteObjects REQUIRED)
+endif()
 
 if(NOT CMAKE_SYSTEM_NAME STREQUAL "iOS")
   find_package(Qt6 COMPONENTS PrintSupport REQUIRED)

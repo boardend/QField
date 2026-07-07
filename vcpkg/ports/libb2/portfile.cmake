@@ -7,8 +7,12 @@ vcpkg_from_github(
 )
 
 set(OPTIONS)
-if(CMAKE_HOST_WIN32)
-    set(OPTIONS --disable-native) # requires cpuid
+if(CMAKE_HOST_WIN32 OR VCPKG_TARGET_IS_IOS OR VCPKG_TARGET_IS_ANDROID)
+    # --enable-native (default) runs AX_EXT, which probes the CPU via cpuid.
+    # On cross builds the probe yields "unknown", so configure crashes with
+    # `0xunknown: value too great for base`. -march=native is meaningless when
+    # cross-compiling anyway, so disable it. (requires cpuid)
+    set(OPTIONS --disable-native)
 endif()
 
 vcpkg_configure_make(

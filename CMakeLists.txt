@@ -2,6 +2,12 @@
 # CMake settings
 cmake_minimum_required(VERSION 3.19)
 
+# on windows
+if(WIN32)
+  set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "" FORCE)
+endif()
+
+
 set(VCPKG_TAG 57987637aac17d62bac535bc839baca3754490e6)
 
 set(QML_IMPORT_PATH ${CMAKE_SOURCE_DIR}/src/qml/imports CACHE PATH "QML import path for Qt Creator to detect custom modules properly")
@@ -170,7 +176,10 @@ if (ANDROID)
 
 endif()
 
-find_package(Qt6 COMPONENTS Concurrent Core Qml Gui Xml Positioning Widgets Network Quick Svg Sql Sensors WebView Multimedia Bluetooth Nfc RemoteObjects WebSockets Quick3D REQUIRED)
+find_package(Qt6 COMPONENTS Concurrent Core Qml Gui Xml Positioning Widgets Network Quick Svg Sql Sensors WebView Multimedia Bluetooth Nfc WebSockets Quick3D REQUIRED)
+if(WIN32)
+  find_package(Qt6 COMPONENTS RemoteObjects REQUIRED)
+endif()
 
 if(NOT CMAKE_SYSTEM_NAME STREQUAL "iOS")
   find_package(Qt6 COMPONENTS PrintSupport REQUIRED)
@@ -211,6 +220,7 @@ if(MSVC)
   add_link_options("$<$<NOT:$<CONFIG:Debug>>:/DEBUG>")
   add_link_options("$<$<NOT:$<CONFIG:Debug>>:/OPT:REF>")
   add_link_options("$<$<NOT:$<CONFIG:Debug>>:/OPT:ICF>")
+  add_link_options("$<$<NOT:$<CONFIG:Debug>>:/DEBUG>")
 elseif(CMAKE_SYSTEM_NAME STREQUAL "iOS")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
   set(CMAKE_XCODE_ATTRIBUTE_DEBUG_INFORMATION_FORMAT "dwarf-with-dsym")

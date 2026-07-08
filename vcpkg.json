@@ -33,6 +33,7 @@
       "name": "gdal",
       "default-features": false
     },
+    "lerc",
     "nu-book-zxing-cpp",
     {
       "name": "qca",
@@ -55,7 +56,8 @@
     {
       "name": "qgis",
       "host": true,
-      "default-features": false
+      "default-features": false,
+      "platform": "!windows"
     },
     {
       "name": "qtbase",
@@ -83,7 +85,10 @@
       ]
     },
     "qtquick3d",
-    "qtremoteobjects",
+    {
+      "name": "qtremoteobjects",
+      "platform": "windows"
+    },
     {
       "name": "qtsensors",
       "features": [

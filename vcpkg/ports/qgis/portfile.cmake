@@ -17,6 +17,7 @@ vcpkg_from_github(
         compatibility.patch
         metadata.patch
         install-quickgui-moc-headers.patch
+        bigobj.patch # MSVC Debug: qgis.cpp exceeds the COFF section limit (C1128)
 )
 
 

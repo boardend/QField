@@ -1,0 +1,20 @@
+diff --git a/cmake/FindWebView2.cmake b/cmake/FindWebView2.cmake
+index d5ba558..59b64b0 100644
+--- a/cmake/FindWebView2.cmake
++++ b/cmake/FindWebView2.cmake
+@@ -34,8 +34,14 @@ endif()
+ find_path(WEBVIEW2_INCLUDE_DIR
+           NAMES WebView2.h
+           PATHS "${WEBVIEW2_SDK_ROOT}/build/native/include")
++# The upstream WebView2 NuGet SDK ships a static loader, WebView2LoaderStatic.lib.
++# vcpkg's webview2 port only produces that on static triplets; on dynamic triplets
++# it installs WebView2Loader.dll together with its import library
++# WebView2Loader.dll.lib. Accept either, preferring the static one when both are
++# present. When the import library is used, WebView2Loader.dll has to be deployed
++# next to the application; vcpkg installs it into the triplet's bin directory.
+ find_library(WEBVIEW2_LIBRARY
+-          NAMES WebView2LoaderStatic.lib
++          NAMES WebView2LoaderStatic.lib WebView2Loader.dll.lib
+           PATHS "${WEBVIEW2_SDK_ROOT}/build/native/${webview2_sdk_arch}")
+ 
+ if(WEBVIEW2_LIBRARY AND WEBVIEW2_INCLUDE_DIR)

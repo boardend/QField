@@ -1,7 +1,9 @@
 set(SCRIPT_PATH "${CURRENT_INSTALLED_DIR}/share/qtbase")
 include("${SCRIPT_PATH}/qt_install_submodule.cmake")
 
-set(${PORT}_PATCHES)
+# Qt's FindWebView2.cmake only looks for the static loader shipped by the NuGet
+# SDK, which vcpkg's webview2 port does not build on dynamic triplets.
+set(${PORT}_PATCHES find-webview2-import-lib.patch)
 
 
 vcpkg_check_features(OUT_FEATURE_OPTIONS FEATURE_OPTIONS

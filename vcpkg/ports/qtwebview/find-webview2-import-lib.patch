@@ -2,7 +2,22 @@ diff --git a/cmake/FindWebView2.cmake b/cmake/FindWebView2.cmake
 index d5ba558..59b64b0 100644
 --- a/cmake/FindWebView2.cmake
 +++ b/cmake/FindWebView2.cmake
-@@ -34,8 +34,14 @@ endif()
+@@ -9,11 +9,14 @@ endif()
+ function(get_cpu_arch result arch)
+     set(arm64List arm64 ARM64 aarch64)
+     set(x64List x86_64 AMD64 x86_64h)
++    set(x86List x86 X86 i386 i686)
+     if(arch IN_LIST x64List)
+         set(${result} "x64" PARENT_SCOPE)
+     elseif(arch IN_LIST arm64List)
+         set(${result} "arm64" PARENT_SCOPE)
++    elseif(arch IN_LIST x86List)
++        set(${result} "x86" PARENT_SCOPE)
+     else()
+         message(FATAL_ERROR "Unknown architecture: ${arch}")
+     endif()
+ endfunction()
+@@ -34,8 +37,14 @@ endif()
  find_path(WEBVIEW2_INCLUDE_DIR
            NAMES WebView2.h
            PATHS "${WEBVIEW2_SDK_ROOT}/build/native/include")

@@ -24,6 +24,8 @@ set(QFIELD_CORE_QML_FILES
     QfVertexRubberband.qml)
 
 # Type registration stays imperative, in QFieldCore::registerQmlTypes().
+# OUTPUT_TARGETS yields the generated resource/object targets that a static QML
+# module needs; they must go into the same export set or install(EXPORT) fails.
 qt_add_qml_module(
   qfield_core
   URI
@@ -34,8 +36,14 @@ qt_add_qml_module(
   NO_GENERATE_QMLTYPES
   RESOURCE_PREFIX
   "/qt/qml"
+  OUTPUT_TARGETS
+  qfield_core_qml_output_targets
   QML_FILES
   ${QFIELD_CORE_QML_FILES})
+
+set(QFIELD_CORE_QML_OUTPUT_TARGETS
+    ${qfield_core_qml_output_targets}
+    PARENT_SCOPE)
 
 qt_import_qml_plugins(qfield_core)
 

@@ -21,12 +21,32 @@ string(REGEX REPLACE "v" "" CLEAN_APP_VERSION "${APP_VERSION}")
 
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake ${CMAKE_MODULE_PATH})
 
+# When OFF, only the libraries are built and installed, so QField can be
+# embedded into another application. The app, the Android service, the tests,
+# the resource `deploy` target and the packaging rules are all skipped.
+set(QFIELD_BUILD_APP ON CACHE BOOL "Build the QField application")
+set(QFIELD_BUILD_GUI ${QFIELD_BUILD_APP} CACHE BOOL "Build the qfield_gui library and the org.qfield.gui QML module")
+# When ON, the caller supplies the vcpkg toolchain and installed tree (this is
+# the case when QField is built as a vcpkg port), so the bundled vcpkg
+# bootstrap must not run and must not override CMAKE_TOOLCHAIN_FILE.
+set(QFIELD_VCPKG_EXTERNAL OFF CACHE BOOL "vcpkg is provided by the caller; skip the bundled vcpkg bootstrap")
+
 # Platform specific fixes (android, macos, ...)
 include(Platform)
 # Obtain git revision
 include(GetGitRevisionDescription)
 # The vcpkg toolchain to compile dependencies
-include(VcpkgToolchain)
+if(QFIELD_VCPKG_EXTERNAL)
+  # Dependencies still come from vcpkg, so WITH_VCPKG must stay on: FindQGIS
+  # keys the qgis-cmake-wrapper include off it, and without that wrapper
+  # QGIS::Core carries none of its static dependencies.
+  set(WITH_VCPKG ON CACHE BOOL "Use the vcpkg submodule for dependency management." FORCE)
+  # VcpkgToolchain is also where find_package(Git) happens, and
+  # GetGitRevisionDescription needs GIT_EXECUTABLE below.
+  find_package(Git REQUIRED)
+else()
+  include(VcpkgToolchain)
+endif()
 # The default installation paths
 include(GNUInstallDirs)
 
@@ -97,7 +117,7 @@ set(WITH_SAMPLE_PROJECTS
     ON
     CACHE BOOL "Enable sample projects")
 
-if (WITH_SAMPLE_PROJECTS)
+if (WITH_SAMPLE_PROJECTS AND QFIELD_BUILD_APP)
   install(DIRECTORY ${CMAKE_SOURCE_DIR}/resources/sample_projects DESTINATION ${CMAKE_INSTALL_DATADIR}/qfield)
 endif()
 
@@ -132,6 +152,8 @@ if (ANDROID)
   set(ANDROID_PACKAGE_SOURCE_DIR ${CMAKE_BINARY_DIR}/android-template)
   set(ANDROID_DRAWABLE_DENSITIES mdpi hdpi xhdpi xxhdpi xxxhdpi)
 
+  # Launcher icons only matter for the packaged application.
+  if (QFIELD_BUILD_APP)
   foreach(DENSITY ${ANDROID_DRAWABLE_DENSITIES})
     set(DST_DIR "${ANDROID_PACKAGE_SOURCE_DIR}/res/drawable-${DENSITY}")
     file(MAKE_DIRECTORY "${DST_DIR}")
@@ -167,6 +189,7 @@ if (ANDROID)
         DESTINATION "${DST_DRAWABLE_DIR}"
       )
   endif()
+  endif() # QFIELD_BUILD_APP
 
 endif()
 
@@ -244,13 +267,17 @@ set(QT_QML_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/qml)
 
 add_subdirectory(src/core)
 add_subdirectory(src/3d)
-add_subdirectory(src/gui)
-if (ANDROID)
-  add_subdirectory(src/service)
+if (QFIELD_BUILD_GUI)
+  add_subdirectory(src/gui)
 endif()
-add_subdirectory(src/app)
+if (QFIELD_BUILD_APP)
+  if (ANDROID)
+    add_subdirectory(src/service)
+  endif()
+  add_subdirectory(src/app)
+endif()
 
-if (ENABLE_TESTS)
+if (ENABLE_TESTS AND QFIELD_BUILD_APP)
   set (TEST_DATA_DIR "${CMAKE_CURRENT_SOURCE_DIR}/test/testdata")
 
   find_package(Qt6 COMPONENTS Test QuickTest)
@@ -258,7 +285,9 @@ if (ENABLE_TESTS)
   add_subdirectory(test)
 endif()
 
-if(WITH_VCPKG)
+# Runtime resources (proj/gdal/qgis data, CA bundle) are only staged for the
+# application; an embedding host stages them from its own vcpkg tree.
+if(WITH_VCPKG AND QFIELD_BUILD_APP)
   # Copy files from the install dir to where it
   # will be bundled
   add_custom_target(deploy)
@@ -356,10 +385,12 @@ if(WITH_VCPKG)
   add_dependencies(qfield deploy)
 endif()
 
-if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
+if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux" AND QFIELD_BUILD_APP)
   install(FILES ${CMAKE_SOURCE_DIR}/images/icons/qfield_logo.svg DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/128x128/apps RENAME qfield.svg)
   install(FILES ${CMAKE_SOURCE_DIR}/platform/linux/qfield.desktop DESTINATION ${CMAKE_INSTALL_DATADIR}/qfield)
   install(FILES ${CMAKE_SOURCE_DIR}/platform/linux/qfield.metainfo.xml DESTINATION ${CMAKE_INSTALL_DATADIR}/metainfo)
 endif()
 
-include(Package)
+if(QFIELD_BUILD_APP)
+  include(Package)
+endif()

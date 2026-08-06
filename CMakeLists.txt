@@ -315,7 +315,7 @@ endif()
 if(WITH_CORE AND NOT CMAKE_GENERATOR STREQUAL "Xcode")
   set(QFIELD_EXPORTED_QT_COMPONENTS
       Core CorePrivate Gui GuiPrivate Xml Positioning Widgets Network Qml Quick
-      Svg Sensors Sql Concurrent WebView Multimedia WebSockets RemoteObjects)
+      Svg Sensors Sql Concurrent Multimedia WebSockets RemoteObjects)
   if(WITH_BLUETOOTH)
     list(APPEND QFIELD_EXPORTED_QT_COMPONENTS Bluetooth)
   endif()

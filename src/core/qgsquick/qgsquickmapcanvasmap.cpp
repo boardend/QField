@@ -183,7 +183,11 @@ void QgsQuickMapCanvasMap::refreshMap()
 
   // create the renderer job
   Q_ASSERT( !mJob );
-  mJob = new QgsMapRendererParallelJob( mapSettings );
+  // A parallel job gives every layer in scale range its own canvas-sized image.
+  if ( mParallelRendering )
+    mJob = new QgsMapRendererParallelJob( mapSettings );
+  else
+    mJob = new QgsMapRendererSequentialJob( mapSettings );
 
   if ( mIncrementalRendering )
     mMapUpdateTimer.start();
@@ -409,6 +413,20 @@ void QgsQuickMapCanvasMap::setIncrementalRendering( bool incrementalRendering )
 
   mIncrementalRendering = incrementalRendering;
   emit incrementalRenderingChanged();
+}
+
+bool QgsQuickMapCanvasMap::parallelRendering() const
+{
+  return mParallelRendering;
+}
+
+void QgsQuickMapCanvasMap::setParallelRendering( bool parallelRendering )
+{
+  if ( parallelRendering == mParallelRendering )
+    return;
+
+  mParallelRendering = parallelRendering;
+  emit parallelRenderingChanged();
 }
 
 double QgsQuickMapCanvasMap::quality() const

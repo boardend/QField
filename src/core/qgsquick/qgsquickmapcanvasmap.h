@@ -27,7 +27,6 @@
 #include <memory>
 
 class QSGSimpleTextureNode;
-class QgsMapRendererParallelJob;
 class QgsMapRendererQImageJob;
 class QgsMapRendererCache;
 class QgsLabelingResults;
@@ -94,6 +93,13 @@ class QgsQuickMapCanvasMap : public QQuickItem
      * When the incrementalRendering property is set to true, the automatic refresh of map canvas during rendering is allowed.
      */
     Q_PROPERTY( bool incrementalRendering READ incrementalRendering WRITE setIncrementalRendering NOTIFY incrementalRenderingChanged )
+
+    /**
+     * When the parallelRendering property is set to true, layers are rendered concurrently, each into its own
+     * canvas-sized image. Peak memory therefore grows with the number of layers in scale range, which large
+     * projects on memory-constrained devices cannot afford; set it to false to render all layers onto one image.
+     */
+    Q_PROPERTY( bool parallelRendering READ parallelRendering WRITE setParallelRendering NOTIFY parallelRenderingChanged )
 
     /**
      * The quality property allows for an increase in rendering speed and memory usage reduction at the
@@ -163,6 +169,12 @@ class QgsQuickMapCanvasMap : public QQuickItem
 
     //! \copydoc QgsQuickMapCanvasMap::incrementalRendering
     void setIncrementalRendering( bool incrementalRendering );
+
+    //! \copydoc QgsQuickMapCanvasMap::parallelRendering
+    bool parallelRendering() const;
+
+    //! \copydoc QgsQuickMapCanvasMap::parallelRendering
+    void setParallelRendering( bool parallelRendering );
 
     //! \copydoc QgsQuickMapCanvasMap::quality
     double quality() const;
@@ -234,6 +246,9 @@ class QgsQuickMapCanvasMap : public QQuickItem
 
     //!\copydoc QgsQuickMapCanvasMap::incrementalRendering
     void incrementalRenderingChanged();
+
+    //!\copydoc QgsQuickMapCanvasMap::parallelRendering
+    void parallelRenderingChanged();
 
     //!\copydoc QgsQuickMapCanvasMap::quality
     void qualityChanged();
@@ -324,7 +339,7 @@ class QgsQuickMapCanvasMap : public QQuickItem
     std::unique_ptr<QgsQuickMapSettings> mMapSettings;
     bool mPinching = false;
     QPoint mPinchStartPoint;
-    QgsMapRendererParallelJob *mJob = nullptr;
+    QgsMapRendererQImageJob *mJob = nullptr;
     std::unique_ptr<QgsMapRendererCache> mCache;
     QgsLabelingResults *mLabelingResults = nullptr;
     QImage mImage;
@@ -335,6 +350,7 @@ class QgsQuickMapCanvasMap : public QQuickItem
     QList<QMetaObject::Connection> mLayerConnections;
     QTimer mMapUpdateTimer;
     bool mIncrementalRendering = false;
+    bool mParallelRendering = true;
     bool mSilentRefresh = false;
     bool mDeferredRefreshPending = false;
     double mQuality = 1.0;
